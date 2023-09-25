@@ -1,6 +1,18 @@
 {% extends 'base.html' %} <br />
-{% block content %} {% for i in list_of_names %}
+{% block content %} <br />
+{% for i in list_of_names %}
 <ul>
   <li>{{ i }}</li>
 </ul>
-{% endfor %} {% endblock content %}
+{% endfor %}
+<h1>Hello 😎</h1>
+<span>Request Method - {{ request_method }}</span>
+<br />
+<br />
+
+<form method="POST" action="/">
+  <input type="text" placeholder="first name" name="first_name" />
+  <input type="text" placeholder="last name" name="last_name" />
+  <input type="submit" />
+</form>
+{% endblock content %}
