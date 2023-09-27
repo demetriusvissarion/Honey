@@ -1,0 +1,8 @@
+{% extends 'base.html' %} <br />
+{% block content %}
+<h1>todo</h1>
+<form action="" method="POST">
+  <!-- Protect agains csrf atatcks: -->
+  {{ form.hidden_tag() }} {{ form.content }} {{ form.submit }}
+</form>
+{% endblock content %}
