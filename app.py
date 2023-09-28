@@ -24,17 +24,18 @@ class TodoModel(db.Model):
     content = db.Column(db.String(240))
 
     def __str__(self):
-        return f'{self.content, {self.id}}'
+        return f'{self.content}, {self.id}'
 
 
 @app.route("/", methods=['GET', 'POST'])
 def hello_world():
 
     request_method = request.method
+    todo = TodoModel.query.all()
     if request.method == 'POST':
         first_name = request.form['first_name']
         return redirect(url_for('name', first_name=first_name))
-    return render_template('hello.html', request_method=request_method)
+    return render_template('hello.html', request_method=request_method, todo=todo)
 
 
 @app.route("/name/<string:first_name>")
