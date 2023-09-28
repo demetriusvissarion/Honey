@@ -1,8 +1,30 @@
 from flask import Flask, render_template, request, redirect, url_for
 from forms import Todo
+from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'password'
+# configure the SQLite database, relative to the app instance folder
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////D:/WORK/zw_PERSONAL_PROJECTS/Miere/tmp/test.db"
+# initialize the app with the extension
+db = SQLAlchemy(app)
+# db.init_app(app)
+
+
+# def create_app():
+#     with app.app_context():
+#         db.create_all()
+#     return app
+
+
+class TodoModel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(240))
+
+    def __str__(self):
+        return f'{self.content, {self.id}}'
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -24,7 +46,9 @@ def name(first_name):
 def todo():
     todo_form = Todo()
     if todo_form.validate_on_submit():
-        print(todo_form.content.data)
+        todo = TodoModel(content=todo_form.content.data)
+        db.session.add(todo)
+        db.session.commit()
         return redirect('/')
     return render_template('todo.html', form=todo_form)
 
